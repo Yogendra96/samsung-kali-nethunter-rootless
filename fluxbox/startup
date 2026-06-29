@@ -1,0 +1,50 @@
+/*
+ * Fluxbox canonical startup — samsung-kali-nethunter-rootless
+ * Tested on Samsung Galaxy S26 Ultra + POCO F1 beryllium.
+ * Works on any proot chroot on 2026+ Android devices.
+ *
+ * This file goes in /home/kali/.fluxbox/startup (NOT /root — chroot home is /home/kali)
+ * and must be executable: chmod +x /home/kali/.fluxbox/startup
+ *
+ * The script:
+ *   1. Waits for X to be ready (sleep 1)
+ *   2. Kills any zombies from previous sessions
+ *   3. Starts the system tray (stalonetray must come BEFORE fbpanel)
+ *   4. Starts the top panel (fbpanel)
+ *   5. Starts the system info widget (conky)
+ *   6. Sets a random Kali wallpaper (feh)
+ *   7. Starts the notification daemon (so tray icons work)
+ *   8. Auto-launches the terminal maximized (xfce4-terminal)
+ *   9. Starts the window manager (fluxbox) — MUST BE LAST
+ */
+#!/bin/sh
+
+# Wait for X server to be fully ready
+sleep 1
+
+# Kill any zombies from previous sessions
+pkill -f fbpanel 2>/dev/null
+pkill -f stalonetray 2>/dev/null
+pkill -f conky 2>/dev/null
+pkill -f rofi 2>/dev/null
+
+# System tray (must come before fbpanel)
+stalonetray --icon-size=16 --kludges=force_icons_size &
+
+# Top panel with app menu, taskbar, clock
+fbpanel &
+
+# System info widget on the desktop
+conky &
+
+# Random Kali wallpaper
+feh --bg-fill --randomize /usr/share/wallpapers/* 2>/dev/null &
+
+# Notification daemon (so tray icons work)
+notification-daemon &
+
+# Auto-launch xfce4-terminal maximized
+xfce4-terminal --maximize &
+
+# Window manager must be last (exec replaces the shell)
+exec fluxbox

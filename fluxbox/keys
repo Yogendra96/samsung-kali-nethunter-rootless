@@ -1,0 +1,15 @@
+# Fluxbox keybindings — samsung-kali-nethunter-rootless
+# This file goes in /home/kali/.fluxbox/keys
+# Fluxbox auto-reloads when this file changes (right-click desktop → Reconfigure if needed)
+
+# Ctrl+Alt+R opens rofi (app launcher)
+Control Mod1 r :ExecCommand DISPLAY=:1 XAUTHORITY=/home/kali/.Xauthority rofi -show drun
+
+# Ctrl+Alt+T opens a new terminal
+Control Mod1 t :ExecCommand xfce4-terminal
+
+# Ctrl+Alt+L locks the screen (via xdg-screensaver if installed)
+# Control Mod1 l :ExecCommand xdg-screensaver lock
+
+# Super key (Windows) opens rofi
+Mod4 r :ExecCommand DISPLAY=:1 XAUTHORITY=/home/kali/.Xauthority rofi -show drun
