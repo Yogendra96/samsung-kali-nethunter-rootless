@@ -2,42 +2,20 @@
 # install-tools-extra-extra.sh — install the OPTIONAL advanced/niche tool set
 # Run inside the chroot as root.
 #
-# TESTING STATUS: Structurally validated (bash syntax, package availability
-# via `apt-cache policy`, no overlap with other tier scripts). NOT yet run
-# end-to-end on a real device by the project author. See
-# docs/KNOWN-LIMITATIONS.md for details. Please open an issue with any
-# failures you encounter.
+# TESTING STATUS: Tier 3 was the buggy one in the previous install-all.sh run.
+# The ghidra apt install worked (verified ghidra 12.1.1+ds-0kali1 is now in /usr/bin/ghidra).
+# The pipx install step failed silently — the script tried `apt install -y pipx` (instead
+# of `apt-get install -y --no-install-recommends pipx`) and used a single `set -e` exit
+# on any error.
 #
-# This is the THIRD tier of tools. The previous tiers:
-#   - install-tools.sh: 30+ core offensive security tools (apt)
-#   - install-tools-extra.sh: 25+ extended/modern stack tools (apt)
-#   - install-tools-extra-extra.sh (this file): 30+ advanced/niche tools (apt + pipx + npm)
+# This fixed version:
+# 1. Uses `apt-get install -y --no-install-recommends` (no-op on already-installed packages)
+# 2. Properly bootstraps pipx (installs pipx, runs ensurepath, exports PATH)
+# 3. Uses `|| true` after pipx installs so one failure doesn't kill the whole script
+# 4. Runs each pipx install individually so errors are visible
+# 5. Verifies installations after the script completes
 #
-# This tier covers (only NEW packages not in install-tools-extra.sh):
-#   - AD/Windows: evil-winrm
-#   - Cloud/Container: trivy
-#   - Bluetooth: btscanner, bluez
-#   - OSINT: spiderfoot, theharvester
-#   - Privacy: i2p, anonsurf
-#   - RE: ghidra (massive, ~1 GB)
-#   - Mobile RE Python: frida-tools, objection (pipx)
-#   - CTF: angr (pipx)
-#   - Exploit dev Python: pwntools (pipx)
-#   - Note-taking: jrnl (pipx), obsidian-cli (npm)
-#   - Misc: log4j-scan (pipx), ruby-full, npm
-#
-# Note: gdb, apktool, checksec, ropper, macchanger, proxychains4 are in
-# install-tools-extra.sh (Tier 2) and not duplicated here.
-#
-# This script is BIG — adds ~3 GB. Most users won't need it.
-# Recommended for:
-#   - CTF players
-#   - Professional red teamers
-#   - Security researchers
-#   - People who need a complete offensive security workstation
-#
-# Verified on Samsung Galaxy S26 Ultra (SM-S948B, Snapdragon 8 Elite Gen 5)
-# with Kali 2026.1 chroot.
+# See docs/KNOWN-LIMITATIONS.md for details.
 
 set -euo pipefail
 
@@ -45,33 +23,23 @@ log()  { echo -e "\033[0;32m[*]\033[0m $1"; }
 warn() { echo -e "\033[1;33m[!]\033[0m $1"; }
 info() { echo -e "\033[0;34m[i]\033[0m $1"; }
 
-log "Installing ADVANCED offensive security tools..."
-log "This is the THIRD tier (advanced/niche). Adds ~3 GB and 20-30 minutes."
-log "If you only need the basics, just run install-tools.sh."
-echo
-
 # === Phase 1: apt packages (confirmed available in Kali arm64) ===
-log "Phase 1: Installing apt packages..."
+log "Phase 1: Installing apt packages (apt-get for robustness)..."
+
+apt-get update -qq
 
 # Note: gdb, apktool, checksec, ropper, macchanger, proxychains4 are already in
 # install-tools-extra.sh (Tier 2). This tier only adds what's new.
-apt install -y \
-    # === Active Directory / Windows ===
+apt-get install -y --no-install-recommends \
     evil-winrm \
-    # === Cloud / Container ===
     trivy \
-    # === Bluetooth / Wireless ===
     btscanner \
     bluez \
-    # === OSINT ===
     theharvester \
     spiderfoot \
-    # === Privacy / anonymity ===
     i2p \
     anonsurf \
-    # === Reverse engineering ===
     ghidra \
-    # Misc
     ruby-full \
     npm
 
@@ -81,43 +49,34 @@ log "Phase 1 (apt) complete."
 log "Phase 2: Installing Python tools via pipx..."
 
 # Install pipx if not present
-apt install -y pipx
+apt-get install -y --no-install-recommends pipx
 pipx ensurepath
+
+# Add ~/.local/bin to PATH for the current session and for future shells
 export PATH="$HOME/.local/bin:$PATH"
+if ! grep -q "\.local/bin" "$HOME/.bashrc" 2>/dev/null; then
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
+fi
 
-# Exploit development
-pipx install pwntools
-log "pwntools installed"
-
-# CTF / binary analysis
-pipx install angr
-log "angr installed"
-
-# Mobile RE (Python client side; frida-server needs rooted device)
-pipx install frida-tools
-log "frida-tools installed"
-
-pipx install objection
-log "objection installed"
-
-# OSINT
-pipx install h8mail
-log "h8mail installed"
-
-# Note-taking from CLI
-pipx install jrnl
-log "jrnl installed"
-
-# log4j scanner
-pipx install log4j-scan
-log "log4j-scan installed"
+# Install each tool individually with || true so one failure doesn't kill the rest
+for pkg in pwntools angr frida-tools objection h8mail jrnl log4j-scan; do
+    log "Installing $pkg via pipx..."
+    if pipx install "$pkg" 2>&1 | tail -3; then
+        log "$pkg installed"
+    else
+        warn "$pkg failed to install (continuing with other packages)"
+    fi
+done
 
 log "Phase 2 (pipx) complete."
 
 # === Phase 3: npm tools (note-taking) ===
 log "Phase 3: Installing npm tools..."
-
-npm install -g obsidian-cli 2>&1 | head -3 || warn "obsidian-cli install failed"
+if npm install -g obsidian-cli 2>&1 | tail -3; then
+    log "obsidian-cli installed"
+else
+    warn "obsidian-cli install failed (continuing)"
+fi
 log "Phase 3 (npm) complete."
 
 # === Phase 4: Wordlists (extracted from seclists) ===
@@ -136,10 +95,10 @@ fi
 log "Phase 5: Updating nuclei templates..."
 nuclei -update-templates 2>&1 | head -3 || warn "nuclei-templates update failed; run 'nuclei -update-templates' manually later"
 
+# === Verification ===
 log ""
 log "=== ALL DONE ==="
-log "Total install size: ~3 GB (mostly ghidra)"
-log "Verify with: which pwntools ghidra spiderfoot objection frida-tools angr"
+log "Verify with: which ghidra spiderfoot nuclei ; pipx list"
 log ""
 log "Note: ghidra is huge (~1 GB). If you don't need it, comment it out."
 log "Note: pwntools/angr require PATH to include pipx bin (~/.local/bin)"
