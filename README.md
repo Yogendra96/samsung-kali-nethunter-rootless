@@ -139,6 +139,9 @@ That's it. After ~25 minutes:
 - The Fluxbox graphical desktop is configured
 - A random VNC password is generated and displayed
 - The chroot is wired to start with `nethunter kex &` and connect via the NetHunter KeX app
+- ✅ **You see this awesome summary when the install finishes:**
+
+![fastfetch](screenshots/fastfetch-small-logo.png)
 
 ---
 
