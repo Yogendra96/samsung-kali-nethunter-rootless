@@ -455,8 +455,9 @@ samsung-kali-nethunter-rootless/
 ├── scripts/                               # Individual installation steps
 │   ├── fix-postgresql.sh                  # Nuclear postgresql-18 fix
 │   ├── fix-dns.sh                         # Write public DNS
-│   ├── install-tools.sh                   # Core offensive security tools (30)
-│   └── install-tools-extra.sh             # Extended tools (25+ more, optional)
+│   ├── install-tools.sh                   # Tier 1: Core offensive security tools (34)
+│   ├── install-tools-extra.sh             # Tier 2: Extended tools (23, optional)
+│   └── install-tools-extra-extra.sh       # Tier 3: Advanced/niche tools (17+8+npm, optional)
 │   ├── install-fluxbox.sh                 # Fluxbox + desktop tools
 │   └── configure-vnc.sh                   # VNC xstartup + password
 │
