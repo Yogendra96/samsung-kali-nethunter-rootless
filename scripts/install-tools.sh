@@ -11,6 +11,8 @@
 set -euo pipefail
 
 log()  { echo -e "\033[0;32m[*]\033[0m $1"; }
+warn() { echo -e "\033[1;33m[!]\033[0m $1"; }
+info() { echo -e "\033[0;34m[i]\033[0m $1"; }
 
 log "Installing offensive security tools (this may take 5-10 minutes)..."
 
