@@ -109,6 +109,8 @@ If you run the install scripts and they work (or fail), please open an issue —
 | OTA updates from Samsung | ✅ Still receive them |
 | `release-keys` in firmware fingerprint | ✅ Still signed by Samsung |
 
+**For the full verification table (all 12 checks with exact `adb` commands to run), see [docs/KNOX-WARRANTY.md](docs/KNOX-WARRANTY.md).**
+
 The chroot runs entirely in **userspace**, the same way WhatsApp, Chrome, or any other app is sandboxed by Android. It cannot touch `/system/`, `/boot/`, or the bootloader.
 
 ---
@@ -485,7 +487,8 @@ samsung-kali-nethunter-rootless/
 │   ├── SAMSUNG.md                         # Samsung-specific notes
 │   ├── MAC-CONTROL.md                     # scrcpy + adb control from Mac
 │   ├── TROUBLESHOOTING.md                 # Every error we hit
-│   └── KNOWN-LIMITATIONS.md                # What's verified vs. untested (READ THIS)
+│   ├── KNOWN-LIMITATIONS.md                # What's verified vs. untested
+│   └── KNOX-WARRANTY.md                   # Verify Knox e-fuse + warranty intact
 │
 ├── references/                            # Background reading
 │   ├── glycin-bwrap-analysis.md           # Why XFCE doesn't work in 2026

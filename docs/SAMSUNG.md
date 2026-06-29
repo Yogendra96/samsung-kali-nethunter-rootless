@@ -138,3 +138,6 @@ nice -n 19 nmap -sV 192.168.1.0/24
 ```
 
 Or break the scan into smaller chunks and run them with delays.
+## See also
+
+For the full Knox warranty verification table (all 12 checks with exact `adb` commands to run), see [KNOX-WARRANTY.md](KNOX-WARRANTY.md).
