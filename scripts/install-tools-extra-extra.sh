@@ -7,18 +7,21 @@
 #   - install-tools-extra.sh: 25+ extended/modern stack tools (apt)
 #   - install-tools-extra-extra.sh (this file): 30+ advanced/niche tools (apt + pipx + npm)
 #
-# This tier covers:
-#   - Exploit dev: gdb, ropper, checksec, ROPgadget (pipx)
-#   - AD/Windows deep: evil-winrm, mimikatz (snap) (NOT TESTED ON ARM64)
+# This tier covers (only NEW packages not in install-tools-extra.sh):
+#   - AD/Windows: evil-winrm
 #   - Cloud/Container: trivy
 #   - Bluetooth: btscanner, bluez
 #   - OSINT: spiderfoot, theharvester
-#   - Privacy: i2p, anonsurf, macchanger, proxychains4
+#   - Privacy: i2p, anonsurf
 #   - RE: ghidra (massive, ~1 GB)
-#   - Mobile RE: apktool, frida-tools (pipx), objection (pipx)
+#   - Mobile RE Python: frida-tools, objection (pipx)
 #   - CTF: angr (pipx)
-#   - Note-taking: jrnl (pipx), obsidian-cli (npm)
 #   - Exploit dev Python: pwntools (pipx)
+#   - Note-taking: jrnl (pipx), obsidian-cli (npm)
+#   - Misc: log4j-scan (pipx), ruby-full, npm
+#
+# Note: gdb, apktool, checksec, ropper, macchanger, proxychains4 are in
+# install-tools-extra.sh (Tier 2) and not duplicated here.
 #
 # This script is BIG — adds ~3 GB. Most users won't need it.
 # Recommended for:
@@ -44,11 +47,9 @@ echo
 # === Phase 1: apt packages (confirmed available in Kali arm64) ===
 log "Phase 1: Installing apt packages..."
 
+# Note: gdb, apktool, checksec, ropper, macchanger, proxychains4 are already in
+# install-tools-extra.sh (Tier 2). This tier only adds what's new.
 apt install -y \
-    # === Exploit development ===
-    ropper \
-    checksec \
-    gdb \
     # === Active Directory / Windows ===
     evil-winrm \
     # === Cloud / Container ===
@@ -62,12 +63,8 @@ apt install -y \
     # === Privacy / anonymity ===
     i2p \
     anonsurf \
-    macchanger \
-    proxychains4 \
     # === Reverse engineering ===
     ghidra \
-    # === Mobile RE ===
-    apktool \
     # Misc
     ruby-full \
     npm
