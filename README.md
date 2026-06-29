@@ -67,13 +67,32 @@ It also ships with a companion **Mac control script** (`control-from-mac.sh`) th
 
 | Device | SoC | Android | Status |
 |---|---|---|---|
-| **Samsung Galaxy S26 Ultra** (SM-S948B) | Snapdragon 8 Elite Gen 5 (SM8850) | 16 | ✅ Verified end-to-end |
+| **Samsung Galaxy S26 Ultra** (SM-S948B) | Snapdragon 8 Elite Gen 5 (SM8850) | 16 | 🟡 Partially verified (see [KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md)) |
 | **Samsung Galaxy S25 Ultra** (SM-S938B) | Snapdragon 8 Elite Gen 4 (SM8750) | 15 | 🟡 Should work (untested) |
 | **Samsung Galaxy A55** | Exynos 1480 | 14 | 🟡 Should work (untested) |
 | **OnePlus 13** | Snapdragon 8 Gen 3 | 15 | 🟡 Should work (Samsung-specific tweaks unnecessary) |
 | **Pixel 9 Pro** | Tensor G4 | 15 | 🟡 Should work (no Samsung quirks) |
 
+**What's been actually tested on the S26 Ultra:**
+
+- ✅ Chroot bootstraps successfully (`install-nethunter-termux`)
+- ✅ DNS fix (`/etc/resolv.conf`) works
+- ✅ Postgresql nuclear fix removes the wedged postgresql-18
+- ✅ Fluxbox + xfce4-terminal install and auto-launch
+- ✅ VNC server (tigervnc) starts on port 5901
+- ✅ NetHunter KeX app connects to the VNC desktop
+- ✅ Tier 1 tools (nmap, msfconsole, etc.) work — installed during the 3-day setup
+- ✅ Scrcpy mirrors the phone screen to the Mac
+- ✅ rofi app launcher works (with XAUTHORITY)
+- ✅ Knox warranty bit remains at 0x0000 (verified end-to-end)
+
+**What has NOT been tested (by us):**
+
+- ⚠️ The 3 install scripts (`install-tools.sh`, `install-tools-extra.sh`, `install-tools-extra-extra.sh`) — we couldn't drive the chroot from a Mac via adb due to technical limitations (see [KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md))
+- The scripts are **structurally valid** (bash syntax, package availability, no overlap) but **have not been run end-to-end** on a real device by us
+
 If you test on another device, please open an issue or PR to add it to this list.
+If you run the install scripts and they work (or fail), please open an issue — we need real-world test results.
 
 ---
 
@@ -465,7 +484,8 @@ samsung-kali-nethunter-rootless/
 │   ├── INSTALL.md                         # Step-by-step walkthrough
 │   ├── SAMSUNG.md                         # Samsung-specific notes
 │   ├── MAC-CONTROL.md                     # scrcpy + adb control from Mac
-│   └── TROUBLESHOOTING.md                 # Every error we hit
+│   ├── TROUBLESHOOTING.md                 # Every error we hit
+│   └── KNOWN-LIMITATIONS.md                # What's verified vs. untested (READ THIS)
 │
 ├── references/                            # Background reading
 │   ├── glycin-bwrap-analysis.md           # Why XFCE doesn't work in 2026

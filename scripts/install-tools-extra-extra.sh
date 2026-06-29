@@ -2,6 +2,12 @@
 # install-tools-extra-extra.sh — install the OPTIONAL advanced/niche tool set
 # Run inside the chroot as root.
 #
+# TESTING STATUS: Structurally validated (bash syntax, package availability
+# via `apt-cache policy`, no overlap with other tier scripts). NOT yet run
+# end-to-end on a real device by the project author. See
+# docs/KNOWN-LIMITATIONS.md for details. Please open an issue with any
+# failures you encounter.
+#
 # This is the THIRD tier of tools. The previous tiers:
 #   - install-tools.sh: 30+ core offensive security tools (apt)
 #   - install-tools-extra.sh: 25+ extended/modern stack tools (apt)

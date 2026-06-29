@@ -2,6 +2,12 @@
 # install-tools-extra.sh — install the OPTIONAL extended tool set
 # Run inside the chroot as root.
 #
+# TESTING STATUS: Structurally validated (bash syntax, package availability
+# via `apt-cache policy`, no overlap with other tier scripts). NOT yet run
+# end-to-end on a real device by the project author. See
+# docs/KNOWN-LIMITATIONS.md for details. Please open an issue with any
+# failures you encounter.
+#
 # What's in this script vs install-tools.sh:
 #   - install-tools.sh: the 30 core tools that are always installed
 #   - install-tools-extra.sh: 25+ additional tools that are useful but optional

@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 # install-tools.sh — install the offensive security tools
 # Run inside the chroot as root.
+#
+# TESTING STATUS: Structurally validated (bash syntax, package availability
+# via `apt-cache policy`, no overlap with other tier scripts). NOT yet run
+# end-to-end on a real device by the project author. See
+# docs/KNOWN-LIMITATIONS.md for details. Please open an issue with any
+# failures you encounter.
 
 set -euo pipefail
 
