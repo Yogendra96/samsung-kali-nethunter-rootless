@@ -107,7 +107,7 @@ adb -d install NetHunterStore.apk
 On your **phone** (in Termux):
 
 ```bash
-wget -qO install.sh https://raw.githubusercontent.com/YOUR-USERNAME/samsung-kali-nethunter-rootless/main/install.sh
+wget -qO install.sh https://raw.githubusercontent.com/Yogendra96/samsung-kali-nethunter-rootless/main/install.sh
 bash install.sh
 ```
 
@@ -511,7 +511,7 @@ PRs welcome! Especially:
 
 ```bash
 # Clone your fork
-git clone https://github.com/YOUR-USERNAME/samsung-kali-nethunter-rootless.git
+git clone https://github.com/Yogendra96/samsung-kali-nethunter-rootless.git
 cd samsung-kali-nethunter-rootless
 
 # Make a test branch
