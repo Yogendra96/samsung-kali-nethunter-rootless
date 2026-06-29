@@ -362,29 +362,54 @@ nethunter kex kill                     # force-kill VNC
 
 ## Controlling the phone from your Mac
 
-Use the companion `control-from-mac.sh` script:
+**For the complete guide** (initial setup, adb commands, scrcpy tricks, ssh, wireless ADB, troubleshooting), see **[docs/MAC-CONTROL.md](docs/MAC-CONTROL.md)**.
+
+### Quick start
 
 ```bash
+# 1. Install tools on the Mac
+brew install android-platform-tools scrcpy
+
+# 2. Connect the phone via USB, enable USB debugging
+#    (Settings → Developer Options → USB Debugging: ON)
+
+# 3. Verify the connection
+adb devices
+# Output: RFGL432J9EZ    device
+
+# 4. Use the all-in-one menu (recommended)
 cd ~/samsung-kali-nethunter-rootless
 ./control-from-mac.sh
+
+# 5. Or run the tools directly
+scrcpy                                # mirror phone screen to Mac
+adb -d shell                          # terminal into phone
+adb -d install myapp.apk              # install APK
+adb -d shell screencap -p /sdcard/x.png  # screenshot
+adb -d pull /sdcard/x.png ./x.png     # pull screenshot to Mac
 ```
 
-This gives you a menu of:
+### The all-in-one menu
+
+`control-from-mac.sh` (in the project root) wraps all the adb + scrcpy operations into a 9-option menu:
 
 ```
-1. Launch scrcpy (mirror phone screen to Mac)
-2. Open adb shell (terminal access to phone)
-3. Send a text string to the focused app
-4. Set up wireless (TCP) ADB — disconnect USB after
-5. Show device info again
-6. Take a screenshot of the phone
-7. Install APKs from this Mac to the phone
-8. Pull a file from the phone to this Mac
-9. Push a file from this Mac to the phone
-0. Quit
+What do you want to do?
+
+  1. Launch scrcpy (mirror phone screen to Mac)
+  2. Open adb shell (terminal access to phone)
+  3. Send a text string to the focused app
+  4. Set up wireless (TCP) ADB — disconnect USB after
+  5. Show device info again
+  6. Take a screenshot of the phone
+  7. Install APKs from this Mac to the phone
+  8. Pull a file from the phone to this Mac
+  9. Push a file from this Mac to the phone
+  0. Quit
 ```
 
 ### scrcpy keyboard shortcuts (when scrcpy window is focused)
+
 
 | Shortcut | Action |
 |---|---|
@@ -437,6 +462,7 @@ samsung-kali-nethunter-rootless/
 ├── docs/                                  # Detailed documentation
 │   ├── INSTALL.md                         # Step-by-step walkthrough
 │   ├── SAMSUNG.md                         # Samsung-specific notes
+│   ├── MAC-CONTROL.md                     # scrcpy + adb control from Mac
 │   └── TROUBLESHOOTING.md                 # Every error we hit
 │
 ├── references/                            # Background reading
