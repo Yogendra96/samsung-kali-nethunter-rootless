@@ -7,8 +7,8 @@
 #   - install-tools-extra.sh: 25+ additional tools that are useful but optional
 #
 # Why split? The core install is ~1.5 GB and runs in ~10 minutes. The extras
-# add another ~2 GB and take 15-20 minutes more. Some users don't need them.
-#
+# add another ~2 GB and 15-20 minutes more. Some users don't need them.
+
 # Categories covered by the extras:
 #   - Web app testing: nuclei, httpx, qsreplace, gf, subfinder
 #   - Active Directory: impacket, bloodhound-python, nxc (crackmapexec)
@@ -69,9 +69,8 @@ apt install -y \
     tor \
     # Misc
     ruby \
-    git \
-    curl \
-    wget
+    git
+    # Note: curl and wget are already in install-tools.sh (core)
 
 # pipx tools (Python tools that aren't in apt)
 log "Installing pipx for Python tool management..."
