@@ -42,4 +42,7 @@ bash <(curl -sSL https://raw.githubusercontent.com/Yogendra96/samsung-kali-nethu
 
 echo ""
 echo "=== ALL TIERS COMPLETE ==="
+echo "Showing your finished Kali chroot system info..."
+fastfetch --logo small 2>/dev/null || fastfetch 2>/dev/null || echo "fastfetch not available"
+echo ""
 echo "Verify with: which nmap msfconsole nuclei ghidra spiderfoot pwntools"

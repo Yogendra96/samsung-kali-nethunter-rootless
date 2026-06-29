@@ -102,6 +102,9 @@ nuclei -update-templates 2>&1 | head -3 || warn "nuclei-templates update failed;
 # === Verification ===
 log ""
 log "=== ALL DONE ==="
+log "Showing your Kali chroot system info..."
+fastfetch --logo small 2>/dev/null || fastfetch 2>/dev/null || echo "fastfetch not available"
+log ""
 log "Verify with: which ghidra spiderfoot nuclei ; pipx list"
 log ""
 log "Note: ghidra is huge (~1 GB). If you don't need it, comment it out."

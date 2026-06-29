@@ -71,3 +71,7 @@ apt-get install -y --no-install-recommends \
 
 log "Done. Verify with: which nmap msfconsole sqlmap burpsuite wireshark ffuf gobuster autopsy seclists"
 log "If any tools show as 'not found', try: apt-get install -y <name>"
+
+# === Show the finished system ===
+log "Showing your Kali chroot system info..."
+fastfetch --logo small 2>/dev/null || fastfetch 2>/dev/null || echo "fastfetch not available (install with: apt-get install -y fastfetch)"

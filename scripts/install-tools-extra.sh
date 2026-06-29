@@ -108,4 +108,8 @@ else
     warn "Could not find rockyou.txt in seclists or /usr/share/wordlists"
 fi
 
+# === Show the finished system (after extras) ===
+log "Showing your Kali chroot system info with new tools..."
+fastfetch --logo small 2>/dev/null || fastfetch 2>/dev/null || echo "fastfetch not available"
+
 log "Done! Verify with: which nuclei impacket-scripts apktool bettercap ghidra"
