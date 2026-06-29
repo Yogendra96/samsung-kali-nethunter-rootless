@@ -23,10 +23,14 @@ log()  { echo -e "\033[0;32m[*]\033[0m $1"; }
 warn() { echo -e "\033[1;33m[!]\033[0m $1"; }
 info() { echo -e "\033[0;34m[i]\033[0m $1"; }
 
-# === Phase 1: apt packages (confirmed available in Kali arm64) ===
-log "Phase 1: Installing apt packages (apt-get for robustness)..."
-
+# Use apt-get (lower-level than apt) so already-installed packages don't
+# cause the whole script to fail. apt-get install on an already-installed
+# package is a no-op.
 apt-get update -qq
+
+# Upgrade existing packages to latest versions FIRST.
+log "Upgrading existing packages to latest versions..."
+apt-get full-upgrade -y --no-install-recommends
 
 # Note: gdb, apktool, checksec, ropper, macchanger, proxychains4 are already in
 # install-tools-extra.sh (Tier 2). This tier only adds what's new.

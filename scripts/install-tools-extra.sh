@@ -42,8 +42,16 @@ log "This is OPTIONAL — it adds ~2 GB and 15-20 minutes."
 log "If you only need the basics, run install-tools.sh instead."
 echo
 
+# Use apt-get (lower-level than apt) so already-installed packages don't
+# cause the whole script to fail.
+apt-get update -qq
+
+# Upgrade existing packages to latest versions FIRST.
+log "Upgrading existing packages to latest versions..."
+apt-get full-upgrade -y --no-install-recommends
+
 # Install all packages in one apt call to save time
-apt install -y \
+apt-get install -y --no-install-recommends \
     # === Web app testing ===
     nuclei \
     httpx-toolkit \

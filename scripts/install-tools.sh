@@ -27,6 +27,12 @@ info() { echo -e "\033[0;34m[i]\033[0m $1"; }
 # cause the whole script to fail. apt-get install on an already-installed
 # package is a no-op.
 apt-get update -qq
+
+# Upgrade existing packages to latest versions FIRST, so all the
+# tools we install below are the newest available.
+log "Upgrading existing packages to latest versions..."
+apt-get full-upgrade -y --no-install-recommends
+
 apt-get install -y --no-install-recommends \
     nmap \
     metasploit-framework \
