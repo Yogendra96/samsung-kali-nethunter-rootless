@@ -11,6 +11,26 @@
 
 ---
 
+## Screenshots
+
+The Fluxbox desktop running on a real Samsung Galaxy S26 Ultra (SM-S948B, Snapdragon 8 Elite Gen 5, Android 16) — captured during the original 3-day setup session:
+
+| Fluxbox desktop with Kali dragon wallpaper | Metasploit loaded with 2,654 exploits |
+|:---:|:---:|
+| ![Fluxbox desktop](screenshots/fluxbox-desktop.png) | ![Metasploit](screenshots/metasploit-loaded.png) |
+
+| Rofi app launcher (press Ctrl+Alt+R) | Termux + Hacker's Keyboard on the phone |
+|:---:|:---:|
+| ![Rofi](screenshots/rofi-launcher.png) | ![Termux](screenshots/termux-on-phone.png) |
+
+| Fluxbox install progress (apt working) |
+|:---:|
+| ![Install](screenshots/fluxbox-install-progress.png) |
+
+> All screenshots are from the test phone used during development. No personal information is shown. See [Warranty & Knox](#warranty--knox) for the verification steps.
+
+---
+
 ## Table of contents
 
 - [What is this?](#what-is-this)
@@ -422,6 +442,13 @@ samsung-kali-nethunter-rootless/
 ├── references/                            # Background reading
 │   ├── glycin-bwrap-analysis.md           # Why XFCE doesn't work in 2026
 │   └── proot-pr-359.md                    # When XFCE might work again
+│
+├── screenshots/                          # Real-device screenshots from testing
+│   ├── fluxbox-desktop.png                # Kali dragon wallpaper, xfce4-terminal
+│   ├── metasploit-loaded.png              # msfconsole with 2,654 exploits
+│   ├── rofi-launcher.png                  # rofi app launcher
+│   ├── termux-on-phone.png                # Hacker's Keyboard in Termux
+│   └── fluxbox-install-progress.png       # apt install progress
 │
 └── downloads/                             # Drop your APKs here (termux.apk, NetHunterStore.apk)
 ```
