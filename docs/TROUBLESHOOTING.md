@@ -72,11 +72,17 @@ Samsung Auto Blocker is enabled.
 
 ### `apt install` fails with "Sub-process /usr/bin/dpkg returned an error code (1)" — postgresql-18
 
-The postgresql-18 package's prerm script tries to start the postgres daemon, which can't run in proot.
+The postgresql-18 package's prerm script tries to stop/reconfigure the database, which can't run properly inside proot.
 
-**Fix (nuclear):** In the chroot as root:
+**Fix (automatic, preferred):** The install scripts now automatically hold postgresql-18 so it won't block `apt-get full-upgrade`:
 
 ```bash
+apt-mark hold postgresql-18 postgresql-18-jit postgresql-client-18
+```
+
+**Fix (manual, if you already have a broken state):**
+```bash
+# One-time repair if you hit a dpkg wedge
 rm -rf /var/lib/dpkg/info/postgresql* \
        /var/lib/dpkg/info/*postgresql* \
        /usr/lib/postgresql \
@@ -86,12 +92,10 @@ rm -rf /var/lib/dpkg/info/postgresql* \
 rm -f /var/lib/dpkg/triggers/File /var/lib/dpkg/triggers/Lock
 dpkg --configure -a
 apt --fix-broken install -y
+apt-mark hold postgresql-18 postgresql-18-jit postgresql-client-18
 ```
 
-**Fix (less nuclear):** Mark postgresql as held so it never updates:
-```bash
-apt-mark hold postgresql-18 postgresql-18-jit
-```
+**Why this happens:** The Kali base image ships postgresql-18 pre-installed. The prerm script calls `invoke-rc.d` to stop the service, but proot doesn't have a real init system, so this fails and dpkg aborts the entire upgrade.
 
 ### VNC server starts but XFCE/MATE/GNOME crashes with "Aborted" or "ICE I/O Error"
 
