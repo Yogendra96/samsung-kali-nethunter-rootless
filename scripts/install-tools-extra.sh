@@ -46,6 +46,10 @@ echo
 # cause the whole script to fail.
 apt-get update -qq
 
+# Hold postgresql-18 packages so they don't block full-upgrade
+# in proot (the prerm script can't stop the service properly in proot)
+apt-mark hold postgresql-18 postgresql-18-jit postgresql-client-18
+
 # Upgrade existing packages to latest versions FIRST.
 log "Upgrading existing packages to latest versions..."
 apt-get full-upgrade -y --no-install-recommends
